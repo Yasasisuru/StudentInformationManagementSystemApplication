@@ -20,8 +20,7 @@ public class StudentService {
 
     public List<Student> searchStudents(String query) {
         if (query != null && !query.isEmpty()) {
-            return studentRepository.findByRegistrationNumberContainingIgnoreCaseOrFullNameContainingIgnoreCase(query,
-                    query);
+            return studentRepository.searchStudents(query);
         }
         return studentRepository.findAll();
     }

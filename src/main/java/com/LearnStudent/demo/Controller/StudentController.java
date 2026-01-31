@@ -17,11 +17,6 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/")
-    public String index() {
-        return "redirect:/students";
-    }
-
     private final List<String> statuses = Arrays.asList("ACTIVE", "INACTIVE");
 
     @GetMapping

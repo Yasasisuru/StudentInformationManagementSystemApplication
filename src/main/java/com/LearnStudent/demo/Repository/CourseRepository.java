@@ -2,12 +2,13 @@ package com.LearnStudent.demo.Repository;
 
 import com.LearnStudent.demo.Entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.util.List;
 
-@Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    List<Course> findByCourseCodeContainingIgnoreCaseOrCourseNameContainingIgnoreCase(String courseCode,
-            String courseName);
+    @Query("SELECT c FROM Course c WHERE " +
+            "LOWER(c.courseCode) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(c.courseName) LIKE LOWER(CONCAT('%', :query, '%'))")
+    List<Course> searchCourses(@Param("query") String query);
 }

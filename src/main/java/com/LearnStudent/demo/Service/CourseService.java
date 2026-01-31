@@ -20,7 +20,7 @@ public class CourseService {
 
     public List<Course> searchCourses(String query) {
         if (query != null && !query.isEmpty()) {
-            return courseRepository.findByCourseCodeContainingIgnoreCaseOrCourseNameContainingIgnoreCase(query, query);
+            return courseRepository.searchCourses(query);
         }
         return courseRepository.findAll();
     }
