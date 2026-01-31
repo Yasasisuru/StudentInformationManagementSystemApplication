@@ -17,9 +17,6 @@ public class Student {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "batch_year")
-    private Integer batchYear;
-
     @Column(name = "department")
     private String department;
 
@@ -40,6 +37,9 @@ public class Student {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "batch_year")
+    private Integer batchYear;
 
     // Getters and Setters
     public Long getId() {
@@ -64,14 +64,6 @@ public class Student {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public Integer getBatchYear() {
-        return batchYear;
-    }
-
-    public void setBatchYear(Integer batchYear) {
-        this.batchYear = batchYear;
     }
 
     public String getDepartment() {
@@ -130,5 +122,11 @@ public class Student {
         this.address = address;
     }
 
-	
+    public Integer getBatchYear() {
+        return batchYear;
+    }
+
+    public void setBatchYear(Integer batchYear) {
+        this.batchYear = batchYear;
+    }
 }

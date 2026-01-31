@@ -17,6 +17,11 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/students";
+    }
+
     private final List<String> statuses = Arrays.asList("ACTIVE", "INACTIVE");
 
     @GetMapping
@@ -24,11 +29,12 @@ public class StudentController {
         List<Student> students = studentService.searchStudents(query);
 
         model.addAttribute("students", students);
+        model.addAttribute("totalStudents", studentService.getAllStudents().size()); // Get absolute total for count
         model.addAttribute("student", new Student());
         model.addAttribute("statuses", statuses);
         model.addAttribute("editMode", false);
         model.addAttribute("q", query);
-        return "index";
+        return "web/index";
     }
 
     @PostMapping("/save")
@@ -41,11 +47,13 @@ public class StudentController {
     public String editStudent(@PathVariable Long id, Model model) {
         Student student = studentService.getStudentById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
-        model.addAttribute("students", studentService.getAllStudents());
+        List<Student> students = studentService.getAllStudents();
+        model.addAttribute("students", students);
+        model.addAttribute("totalStudents", students.size());
         model.addAttribute("student", student);
         model.addAttribute("statuses", statuses);
         model.addAttribute("editMode", true);
-        return "index";
+        return "web/index";
     }
 
     @PostMapping("/update/{id}")
