@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMS | Student Information Management System</title>
+    <title>SIMS | Course Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -324,19 +324,20 @@
     <div class="layout">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <a href="#" class="logo">
+            <a th:href="@{/students}" class="logo">
                 <i class="fas fa-graduation-cap"></i>
                 <span>SIMS</span>
             </a>
             <nav class="nav-links">
-                <a th:href="@{/students}" class="active">
+                <a th:href="@{/students}">
                     <i class="fas fa-users"></i>
                     <span>Students</span>
                 </a>
-                <a th:href="@{/courses}">
+                <a th:href="@{/courses}" class="active">
                     <i class="fas fa-book"></i>
                     <span>Courses</span>
                 </a>
+               
             </nav>
         </aside>
 
@@ -344,76 +345,59 @@
         <main class="main">
             <header class="top-header">
                 <div class="header-title">
-                    <h1>Student Portal</h1>
-                    <p>Manage registrations and student analytics</p>
+                    <h1>Courses</h1>
+                    <p>Manage curriculum and course offerings</p>
                 </div>
 
-                <form class="search-container" th:action="@{/students}" method="get">
+                <form class="search-container" th:action="@{/courses}" method="get">
                     <i class="fas fa-search"></i>
-                    <input type="text" name="q" placeholder="Search students..." th:value="${q}">
+                    <input type="text" name="q" placeholder="Search courses..." th:value="${q}">
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form>
             </header>
 
-            <!-- Registration Form -->
+            <!-- Course Form -->
             <div class="card">
                 <div class="card-header">
-                    <h2 th:text="${editMode} ? 'Edit Student Details' : 'Register New Student'">Register New Student</h2>
+                    <h2 th:text="${editMode} ? 'Edit Course Details' : 'Add New Course'">Add New Course</h2>
                 </div>
 
-                <form th:action="${editMode} ? @{/students/update/{id}(id=${student.id})} : @{/students/save}"
-                      th:object="${student}" method="post">
+                <form th:action="${editMode} ? @{/courses/update/{id}(id=${course.id})} : @{/courses/save}"
+                      th:object="${course}" method="post">
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>Registration No.</label>
-                            <input type="text" th:field="*{registrationNumber}" placeholder="REG/2024/001" required>
+                            <label>Course Code</label>
+                            <input type="text" th:field="*{courseCode}" placeholder="TICT4272" required>
                         </div>
                         <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" th:field="*{fullName}" placeholder="John Doe" required>
+                            <label>Course Name</label>
+                            <input type="text" th:field="*{courseName}" placeholder="Course Name" required>
                         </div>
                         <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" th:field="*{email}" placeholder="john@example.com" required>
+                            <label>Credits</label>
+                            <input type="number" th:field="*{credits}" placeholder="2" required>
                         </div>
                         <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="text" th:field="*{phone}" placeholder="+1 234 567 890">
-                        </div>
-                        <div class="form-group">
-                            <label>Batch Year</label>
-                            <input type="number" th:field="*{batchYear}" placeholder="2024" required>
+                            <label>Semester</label>
+                            <select th:field="*{semester}" required>
+                                <option value="Semester 1">Semester 1.1</option>
+                                <option value="Semester 2">Semester 1.2</option>
+                                <option value="Semester 3">Semester 2.1</option>
+                                <option value="Semester 4">Semester 2.2</option>
+                                <option value="Semester 5">Semester 3.1</option>
+                                <option value="Semester 6">Semester 3.2</option>
+                                <option value="Semester 7">Semester 4.1</option>
+                                <option value="Semester 8">Semester 4.2</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Department</label>
                             <select th:field="*{department}" required>
                                 <option value="Computer Science">Computer Science</option>
                                 <option value="Information Technology">Information Technology</option>
-                                <option value="Engineering">Engineering</option>
-                                <option value="Mathematics">Mathematics</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Date of Birth</label>
-                            <input type="date" th:field="*{dateOfBirth}">
-                        </div>
-                        <div class="form-group">
-                            <label>Gender</label>
-                            <select th:field="*{gender}">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="grid-column: span 2;">
-                            <label>Home Address</label>
-                            <input type="text" th:field="*{address}" placeholder="123 Academic Way, City">
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select th:field="*{status}">
-                                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+                                <option value="Business studies">Business studies</option>
+                                <option value="Applied sciences">Applied sciences</option>
                             </select>
                         </div>
                     </div>
@@ -421,9 +405,9 @@
                     <div style="margin-top: 2rem; display: flex; gap: 1rem;">
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-save"></i>
-                            <span th:text="${editMode} ? 'Update Student' : 'Save Registration'">Save Registration</span>
+                            <span th:text="${editMode} ? 'Update Course' : 'Save Course'">Save Course</span>
                         </button>
-                        <a th:href="@{/students}" class="btn btn-secondary">Cancel</a>
+                        <a th:href="@{/courses}" class="btn btn-secondary">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -431,9 +415,9 @@
             <!-- Table Card -->
             <div class="card">
                 <div class="card-header">
-                    <h2>All Students List</h2>
+                    <h2>All Courses List</h2>
                     <span class="badge badge-active" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                        Total Students: <span th:text="${totalStudents}">0</span>
+                        Total Courses: <span th:text="${totalCourses}">0</span>
                     </span>
                 </div>
 
@@ -441,36 +425,28 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Reg No</th>
-                                <th>Student Name</th>
-                                <th>Email</th>
-                                <th>Batch</th>
+                                <th>Code</th>
+                                <th>Course Name</th>
+                                <th>Credits</th>
+                                <th>Semester</th>
                                 <th>Department</th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="st : ${students}">
-                                <td style="font-weight: 600;" th:text="${st.registrationNumber}"></td>
-                                <td>
-                                    <span th:text="${st.fullName}"></span>
-                                </td>
-                                <td th:text="${st.email}"></td>
-                                <td th:text="${st.batchYear}"></td>
-                                <td th:text="${st.department}"></td>
-                                <td>
-                                    <span class="badge" 
-                                          th:classappend="${st.status == 'ACTIVE' ? 'badge-active' : 'badge-inactive'}"
-                                          th:text="${st.status}"></span>
-                                </td>
+                            <tr th:each="c : ${courses}">
+                                <td style="font-weight: 600;" th:text="${c.courseCode}"></td>
+                                <td th:text="${c.courseName}"></td>
+                                <td th:text="${c.credits}"></td>
+                                <td th:text="${c.semester}"></td>
+                                <td th:text="${c.department}"></td>
                                 <td class="actions">
-                                    <a class="btn-icon btn-edit" th:href="@{/students/edit/{id}(id=${st.id})}" title="Edit">
+                                    <a class="btn-icon btn-edit" th:href="@{/courses/edit/{id}(id=${c.id})}" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a class="btn-icon btn-delete" 
-                                       th:href="@{/students/delete/{id}(id=${st.id})}" 
-                                       onclick="return confirm('Archive this record?');" title="Delete">
+                                       th:href="@{/courses/delete/{id}(id=${c.id})}" 
+                                       onclick="return confirm('Delete this course?');" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
